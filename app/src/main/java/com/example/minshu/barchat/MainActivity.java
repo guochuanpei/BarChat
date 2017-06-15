@@ -45,15 +45,15 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         mChart.setDrawBarShadow(false);
         mChart.setDrawValueAboveBar(true);
         mChart.setDrawGridBackground(true);
-
+        mChart.fitScreen();//适应屏幕
         Legend l = mChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(true);
         l.setTypeface(mTfLight);
         l.setYOffset(0f);
-        l.setXOffset(10f);
+        l.setXOffset(0f);
         l.setYEntrySpace(0f);
         l.setTextSize(8f);
 
@@ -62,12 +62,14 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         xAxis.setTypeface(mTfLight);
         xAxis.setLabelCount(7);
         xAxis.setGranularity(1f);
+        xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(true);
         xAxis.setCenterAxisLabels(true);
         //xAxis.setValueFormatter(new MyValueFormatter());
 
         YAxis leftAxis = mChart.getAxisLeft();
-        //leftAxis.setTypeface(mTfLight);
+        leftAxis.setTypeface(mTfLight);
+        leftAxis.setDrawAxisLine(true);
         leftAxis.setValueFormatter(new LargeValueFormatter());
         leftAxis.setDrawGridLines(false);
         leftAxis.setSpaceTop(35f);
@@ -83,10 +85,10 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         ArrayList<BarEntry> yVals2 = new ArrayList<BarEntry>();
         ArrayList<BarEntry> yVals3 = new ArrayList<BarEntry>();
         ArrayList<BarEntry> yVals4 = new ArrayList<BarEntry>();
-        for (int i = 0; i < 31; i++) {
+        for (int i = 1; i <= 31; i++) {
             yVals3.add(new BarEntry(i, i));
         }
-        for (int i = 0; i < 31; i++) {
+        for (int i = 1; i <= 31; i++) {
             yVals4.add(new BarEntry(i, i));
         }
         float randomMultiplier = 10 * 10f;
@@ -120,9 +122,9 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         /**
          *
          */
-        float groupSpace = 0.04f;
-        float barSpace = 0.18f; // x4 DataSet
-        float barWidth = 0.3f; // x4 DataSet
+        float groupSpace = 0.08f;
+        float barSpace = 0.06f; // x4 DataSet
+        float barWidth = 0.4f; // x4 DataSet
         // (0.2 + 0.03) * 4 + 0.08 = 1.00 -> interval per "group"
         /**
          * specify the width each bar should have  指定每个栏宽度
@@ -137,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements OnChartValueSelec
         /**
          * barData.getGroupWith(…)是一个助手,计算每组宽度需要根据提供的参数
          */
+        mChart.getXAxis().setAxisMaximum(startYear + mChart.getBarData().getGroupWidth(groupSpace, barSpace) * groupCount);
         mChart.groupBars(startYear, groupSpace, barSpace);
         mChart.invalidate();
     }
